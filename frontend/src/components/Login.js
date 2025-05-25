@@ -29,6 +29,7 @@ const Login = () => {
           <div className="columns is-centered">
             <div className="column is-4-desktop is-6-tablet">
               <div className="has-text-centered mb-4">
+                {/* //image */}
             <img
               src="https://storage.googleapis.com/film-app-assets/Screenshot%202025-05-25%20103739.png"
               alt="Logo film"
