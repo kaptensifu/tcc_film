@@ -12,6 +12,7 @@ app.use(cookieParser());
 app.use(cors({ 
   origin: [
     'http://localhost:3000',
+    'https://takhir-film-dot-c-01-450604.uc.r.appspot.com'
   ], // ganti sesuai frontend kamu
   credentials: true 
 }));
