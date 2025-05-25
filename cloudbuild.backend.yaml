@@ -1,12 +1,12 @@
 steps:
   # 1. Build Docker image untuk backend
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/takhir_film", "."]
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/takhir-film", "."]
     dir: "backend"
 
   # 2. Push ke Container Registry / Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/$PROJECT_ID/takhir_film"]
+    args: ["push", "gcr.io/$PROJECT_ID/takhir-film"]
 
   # 3. Deploy ke Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
@@ -15,9 +15,9 @@ steps:
       [
         "run",
         "deploy",
-        "takhir_film",
+        "takhir-film",
         "--image",
-        "gcr.io/$PROJECT_ID/takhir_film",
+        "gcr.io/$PROJECT_ID/takhir-film",
         "--timeout",
         "1000s",
         "--port",
