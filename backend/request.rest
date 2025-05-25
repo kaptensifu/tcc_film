@@ -1,0 +1,105 @@
+GET http://localhost:5000/films
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InRlcyIsImVtYWlsIjoidGVzQHRlcy5jb20iLCJnZW5kZXIiOiJNYWxlIiwiY3JlYXRlZEF0IjoiMjAyNS0wNS0xN1QwNjoxNjowOC4wMDBaIiwidXBkYXRlZEF0IjoiMjAyNS0wNS0xOFQwNDo0NToyNS4wMDBaIiwiaWF0IjoxNzQ3NTQ0MjQ5LCJleHAiOjE3NDc1NDQyNzl9.4PA_wtjxJL6Y3F2YZ14XtOLBy7b_qvrOe7d1hFT-ii4
+
+###
+GET http://localhost:5000/films/1
+
+###
+POST http://localhost:5000/add-film
+Content-Type: application/json
+
+{
+    "judul": "Bull eye",
+    "genre": "action",
+    "tahun": "2123"
+}
+
+###
+PATCH http://localhost:5000/edit-film/1
+Content-Type: application/json
+
+{
+    "judul": "handuk",
+    "genre": "comedy",
+    "tahun": "23333"
+}
+
+###
+DELETE http://localhost:5000/delete-film/2
+
+###
+GET http://localhost:5000/ratings
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InRlcyIsImVtYWlsIjoidGVzQHRlcy5jb20iLCJjcmVhdGVkQXQiOiIyMDI1LTA1LTIxVDAyOjM3OjAxLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDI1LTA1LTIxVDA5OjUxOjMwLjAwMFoiLCJpYXQiOjE3NDc4MjI1MTQsImV4cCI6MTc0NzgyMjgxNH0.4EV-1W-qoftp3EAU288Q8nUr1fw2n3GO1x-Zgc1E4sE
+
+###
+GET http://localhost:5000/ratings?filmId=1&userId=1
+
+###
+POST http://localhost:5000/add-rating
+Content-Type: application/json
+
+{
+    "rating": 8,
+  "komentar": "Filmnya keren",
+  "userId": 1,
+  "filmId": 1
+}
+
+###
+PATCH http://localhost:5000/edit-rating/1
+Content-Type: application/json
+
+{
+    "rating": "6",
+    "komentar": "comedy good"
+    
+}
+
+###
+DELETE http://localhost:5000/delete-rating/1
+
+###
+GET http://localhost:5000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6InRlcyIsImVtYWlsIjoidGVzQHRlcy5jb20iLCJjcmVhdGVkQXQiOiIyMDI1LTA1LTI1VDAzOjIyOjMzLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDI1LTA1LTI1VDAzOjIyOjMzLjAwMFoiLCJpYXQiOjE3NDgxNDMzNjUsImV4cCI6MTc0ODE0MzY2NX0.p6FFFLWMb9x7PVdFV8U5anSME2z1cQzjxuMlBKrWAJ0
+###
+
+POST http://localhost:5000/register
+Content-Type: application/json
+
+{
+    "name": "tes",
+    "email": "tes@tes.com",
+    "password": "12345"
+}
+
+### 
+
+PUT http://localhost:5000/edit-user/14
+Content-Type: application/json
+
+{
+    "name": "tessss",
+    "email": "tesss@tessss.com",
+}
+
+###
+
+DELETE http://localhost:5000/delete-user/17
+
+
+###
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+   
+    "name": "tes",
+    "password": "12345"
+}
+
+
+
+###
+
+DELETE http://localhost:5000/logout

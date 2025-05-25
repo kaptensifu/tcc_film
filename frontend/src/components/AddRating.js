@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
 import AxiosInstance from '../utils/AxiosInstance.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from "../auth/AuthProvider.js";
 import 'bulma/css/bulma.min.css';
 
-const AddFilm = () => {
-  const [judul, setJudul] = useState('');
-  const [genre, setGenre] = useState('');
-  const [tahun, setTahun] = useState('');
+const AddRating = () => {
+  const [komentar, setKomentar] = useState('');
+  const [rating, setRating] = useState('');
+  const { user } = useAuth();
+  const { id: filmId } = useParams();
   const navigate = useNavigate();
 
-  const saveFilm = async (e) => {
+  const saveRating = async (e) => {
     e.preventDefault();
     try {
-      await AxiosInstance.post("/add-film", { // Hapus BASE_URL dan gunakan AxiosInstance
-        judul,
-        genre,
-        tahun,
+      await AxiosInstance.post("/add-rating", { // Hapus BASE_URL dan gunakan AxiosInstance
+        komentar,
+        rating,
+        userId: user.id, // Menggunakan ID pengguna dari konteks Auth
+        filmId
+        
       });
-      navigate("/films");
+      navigate(`/films/${filmId}`);
     } catch (error) {
       console.log(error);
     }
@@ -33,20 +37,17 @@ const AddFilm = () => {
           borderRadius: "8px",
           padding: "2rem",
         }}>
-          <h1 className="judul has-text-white has-text-centered">🎬 Tambah Film Baru</h1>
-          <form onSubmit={saveFilm} >
+          <h1 className="Komentar has-text-white has-text-centered">🎬 Tambah Ulasan Baru</h1>
+          <form onSubmit={saveRating} >
             <div className="field">
-              <label className="label has-text-white">Judul</label>
-              <input className="input" value={judul} onChange={(e) => setJudul(e.target.value)} required />
+              <label className="label has-text-white">Komentar</label>
+              <input className="input" value={komentar} onChange={(e) => setKomentar(e.target.value)} required />
             </div>
             <div className="field">
-              <label className="label has-text-white">Genre</label>
-              <input className="input" value={genre} onChange={(e) => setGenre(e.target.value)} required />
+              <label className="label has-text-white">Rating</label>
+              <input className="input" type='number' value={rating} onChange={(e) => setRating(e.target.value)} required />
             </div>
-            <div className="field">
-              <label className="label has-text-white">Tahun</label>
-              <input className="input" type="number" value={tahun} onChange={(e) => setTahun(e.target.value)} required />
-            </div>
+            
             
             <div className="has-text-centered mt-4">
               <button className="button" type="submit"
@@ -66,4 +67,4 @@ const AddFilm = () => {
   );
 };
 
-export default AddFilm;
+export default AddRating;

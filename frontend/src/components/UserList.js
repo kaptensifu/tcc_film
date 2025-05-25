@@ -1,66 +1,83 @@
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import { BASE_URL } from '../utils';
+import AxiosInstance from '../utils/AxiosInstance';
 
 const UserList = () => {
-    const [users, setUsers] = useState([]);
+  const [userRatingsMap, setUserRatingsMap] = useState({});
 
-    useEffect(() => {
-        // async function fetchUsers() {
-        //   const res = await axios.get(`${BASE_URL}/users`);
-        //   setUsers(res.data);
-        // }
-        // fetchUsers();
+  useEffect(() => {
+    fetchRatings();
+  }, []);
 
-        // Dummy data
-        setUsers([
-            { id: 1, username: "admin" },
-            { id: 2, username: "filmlover" },
-        ]);
-    }, []);
+  const fetchRatings = async () => {
+    try {
+      const response = await AxiosInstance.get('/ratings'); // pastikan ini mengembalikan user & film di dalamnya
+      const ratings = response.data;
 
-    return (
-        <section className="section has-background-dark" style={{ minHeight: '100vh' }}>
-            <div className="container">
-                <div className="box" style={{
-                    backgroundColor: "#6a0dad",
-                    border: "1px solid #1a1a1a",
-                    color: "#fff",
-                    borderRadius: "8px",
-                    padding: "2rem"
-                }}>
-                    <h1 className="title has-text-white has-text-centered">👤 Daftar Pengguna</h1>
-                    <ul>
-                        {users.map((user) => (
-                            <li key={user.id} className="mb-3" style={{
-                                backgroundColor: "#4b0082",
-                                color: "#fff",
-                                padding: "1rem",
-                                borderRadius: "5px"
-                            }}>
-                                <strong style={{ color: "#E8B8F7FF" }}>{user.username}</strong>
-                                <div className="buttons is-right mt-2">
-                                    <button className="button is-small"
-                                        style={{ backgroundColor: "#ffd700", color: "#000" }}
-                                        onClick={() => {/* handleEditReview(review.id) */ }}
-                                    >
-                                        ✏️ Edit
-                                    </button>
-                                    <button className="button is-small"
-                                        style={{ backgroundColor: "#ff4d4d", color: "#fff" }}
-                                        onClick={() => {/* handleDeleteReview(review.id) */ }}
-                                    >
-                                        🗑️ Delete
-                                    </button>
-                                </div>
+      // Buat map userId -> data user dan daftar komentarnya
+      const grouped = {};
+      ratings.forEach((rating) => {
+        const userId = rating.user.id;
+        if (!grouped[userId]) {
+          grouped[userId] = {
+            user: rating.user,
+            ratings: []
+          };
+        }
+        grouped[userId].ratings.push({
+          id: rating.id,
+          komentar: rating.komentar,
+          rating: rating.rating,
+          film: rating.film
+        });
+      });
 
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-        </section>
-    );
+      setUserRatingsMap(grouped);
+    } catch (error) {
+      console.error('Gagal mengambil data rating:', error);
+    }
+  };
+
+  return (
+    <section className="section has-background-dark" style={{ minHeight: '100vh' }}>
+      <div className="container">
+        <div className="box" style={{
+          backgroundColor: "#6a0dad",
+          border: "1px solid #1a1a1a",
+          color: "#fff",
+          borderRadius: "8px",
+          padding: "2rem"
+        }}>
+          <h1 className="title has-text-white has-text-centered">👤 Daftar Pengguna & Ulasan</h1>
+          <ul>
+            {Object.values(userRatingsMap).map(({ user, ratings }) => (
+              <li key={user.id} className="mb-5" style={{
+                backgroundColor: "#4b0082",
+                color: "#fff",
+                padding: "1rem",
+                borderRadius: "5px"
+              }}>
+                <strong style={{ color: "#E8B8F7FF", fontSize: "1.2rem" }}>{user.name}</strong>
+                <ul className="mt-3">
+                  {ratings.map((r) => (
+                    <li key={r.id} style={{
+                      backgroundColor: "#3a0066",
+                      padding: "0.75rem",
+                      borderRadius: "5px",
+                      marginBottom: "0.5rem"
+                    }}>
+                      <p style={{ margin: 0 }}><strong style={{color: "#48DBF8FF"}}>🎬 {r.film.judul}</strong></p>
+                      <p style={{ margin: 0 }}>{r.komentar}</p>
+                      <p style={{ margin: 0 }}><strong>⭐</strong> {r.rating}</p>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default UserList;
