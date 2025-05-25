@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const AxiosInstance = axios.create({
-  baseURL: "https://takhir-film-948060519163.us-central1.run.app/films",
+  baseURL: "https://takhir-film-948060519163.us-central1.run.app",
   withCredentials: true,
 });
 
