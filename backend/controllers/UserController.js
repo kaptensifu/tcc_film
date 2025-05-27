@@ -106,10 +106,10 @@ async function loginHandler(req, res){
           const decryptPassword = await bcrypt.compare(password, user.password);
           if(decryptPassword){
               const accessToken = jwt.sign(safeUserData, process.env.ACCESS_TOKEN_SECRET, {
-                  expiresIn : '5m' 
+                  expiresIn : '15m' 
               });
               const refreshToken = jwt.sign(safeUserData, process.env.REFRESH_TOKEN_SECRET, {
-                  expiresIn : '1d' 
+                  expiresIn : '7d' 
               });
               await User.update({refresh_token:refreshToken},{
                   where:{
@@ -118,9 +118,9 @@ async function loginHandler(req, res){
               });
               res.cookie('refreshToken', refreshToken,{
                   httpOnly : false, //ngatur cross-site scripting, untuk penggunaan asli aktifkan karena bisa nyegah serangan fetch data dari website "document.cookies"
-                  sameSite : 'lax',  //lax ini ngatur domain yg request misal kalo strict cuman bisa akseske link dari dan menuju domain yg sama, lax itu bisa dari domain lain tapi cuman bisa get
+                  sameSite : 'none',  //lax ini ngatur domain yg request misal kalo strict cuman bisa akseske link dari dan menuju domain yg sama, lax itu bisa dari domain lain tapi cuman bisa get
                   maxAge  : 24*60*60*1000,
-                  secure:false // false ini ngirim cookies cuman bisa dari https, kenapa? nyegah skema MITM di jaringan publik, tapi pas development di false in aja
+                  secure:true // false ini ngirim cookies cuman bisa dari https, kenapa? nyegah skema MITM di jaringan publik, tapi pas development di false in aja
               });
               res.status(200).json({
                   status: "Succes",
